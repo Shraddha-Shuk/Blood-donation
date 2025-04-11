@@ -14,7 +14,9 @@ import 'package:http/http.dart' as http; // Add this for making HTTP requests
 import 'dart:convert'; // Add this for JSON decoding
 import 'package:geocoding/geocoding.dart'; // Add this for reverse geocoding
 import 'package:latlong2/latlong.dart'; // Add this import for LatLng
-
+import 'package:intl/intl.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:geolocator/geolocator.dart';
 class MainScreen extends StatefulWidget {
   @override
   State<MainScreen> createState() => _MainScreenState();
@@ -450,12 +452,112 @@ Future<void> showHospitals(BuildContext context) async {
   }
 }
 
+List<Map<String, dynamic>> bloodRequests = [];
+
+Future<void> fetchBloodRequests() async {
+  try {
+    User? user = FirebaseAuth.instance.currentUser;
+    String bg = "";
+
+    if (user != null) {
+      String uid = user.uid;
+
+      DocumentSnapshot userDoc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(uid)
+          .get();
+
+      if (userDoc.exists) {
+        bg = userDoc['bloodType'] ?? "";
+      }
+    }
+
+    // ✅ Get current user location
+    Position userPosition = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+
+    QuerySnapshot snapshot = await FirebaseFirestore.instance
+        .collection('bloodRequests')
+        .where('bloodGroup', isEqualTo: bg)
+        .get();
+
+    List<Map<String, dynamic>> filteredRequests = [];
+
+    for (var doc in snapshot.docs) {
+      final data = doc.data() as Map<String, dynamic>;
+      final locationStr = data['location'];
+
+      try {
+        // ✅ Parse location string to LatLng
+        List<String> latLng = locationStr.split(',');
+        double requestLat = double.parse(latLng[0]);
+        double requestLng = double.parse(latLng[1]);
+
+        double distanceInMeters = Geolocator.distanceBetween(
+          userPosition.latitude,
+          userPosition.longitude,
+          requestLat,
+          requestLng,
+        );
+
+        if (distanceInMeters <= 20000) {
+          filteredRequests.add({
+            "name": data['name'] ?? 'Anonymous',
+            "bloodGroup": data['bloodGroup'] ?? 'N/A',
+            "hospital": data['hospital'] ?? 'Unknown',
+            "location": locationStr,
+            "units": data['units'] ?? 0,
+            "status": data['status'] ?? 'unknown',
+            "phone": data['phone'] ?? 'N/A',
+            "gender": data['gender'] ?? 'N/A',
+            "date": data['date'] ?? '',
+            "time": data['time'] ?? '',
+          });
+        }
+      } catch (e) {
+        print('Error processing location: $e');
+      }
+    }
+
+    // ✅ Optional: Sort by date/time (latest first)
+    filteredRequests.sort((a, b) {
+      final dateTimeA = parseDateTime(a['date'], a['time']);
+      final dateTimeB = parseDateTime(b['date'], b['time']);
+      return dateTimeB.compareTo(dateTimeA);
+    });
+
+    setState(() {
+      bloodRequests = filteredRequests;
+    });
+  } catch (e) {
+    print("Error fetching blood requests: $e");
+  }
+}
+
+DateTime parseDateTime(String date, String time) {
+  try {
+    final dateParts = date.split('/');
+    final month = int.parse(dateParts[0]);
+    final day = int.parse(dateParts[1]);
+    final year = int.parse(dateParts[2]);
+
+    final dateString =
+        "$year-${month.toString().padLeft(2, '0')}-${day.toString().padLeft(2, '0')} $time";
+    return DateFormat("yyyy-MM-dd hh:mm a").parse(dateString);
+  } catch (e) {
+    return DateTime(2000);
+  }
+}
+
+
+
 
   @override
   void initState() {
     super.initState();
     checkDonorStatus();
     fetchCurrentLocation(); // Fetch the user's location on initialization
+    fetchBloodRequests();
   }
 
   @override
@@ -642,11 +744,103 @@ Future<void> showHospitals(BuildContext context) async {
                 },
               ),
             ),
+            buildBloodRequestsSection(),
           ],
         ),
       ),
     );
   }
+Widget buildBloodRequestsSection() {
+  if (bloodRequests.isEmpty) {
+    return const Padding(
+      padding: EdgeInsets.all(16.0),
+      child: Text("No active blood requests."),
+    );
+  }
+
+  return ListView.builder(
+    shrinkWrap: true,
+    physics: const NeverScrollableScrollPhysics(),
+    itemCount: bloodRequests.length,
+    itemBuilder: (context, index) {
+      final request = bloodRequests[index];
+      final String bloodGroup = request["bloodGroup"];
+      final String name = request["name"];
+      final int units = request["units"];
+      final String date = request["date"];
+      final String time = request["time"];
+      final String location = request["location"];
+
+      return Card(
+        color: const Color(0xFFFCF6F6),
+        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        elevation: 4,
+        child: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Row(
+            children: [
+              // Blood Group Circle
+              Container(
+                width: 70,
+                height: 70,
+                decoration: const BoxDecoration(
+                  color: Colors.pinkAccent,
+                  shape: BoxShape.circle,
+                ),
+                alignment: Alignment.center,
+                child: Text(
+                  bloodGroup,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                    color: Colors.white,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              const SizedBox(width: 16),
+              // Name, Units, Date-Time
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(name, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                    Text("Units: $units", style: const TextStyle(fontSize: 14)),
+                    Text("$date, $time", style: const TextStyle(fontSize: 14)),
+                  ],
+                ),
+              ),
+              // Location Button
+              GestureDetector(
+                onTap: () async {
+                  final Uri uri = Uri.parse("https://www.google.com/maps/search/?api=1&query=$location");
+                  if (await canLaunchUrl(uri)) {
+                    await launchUrl(uri, mode: LaunchMode.externalApplication);
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text("Could not open Google Maps")),
+                    );
+                  }
+                },
+                child: Container(
+                  width: 40,
+                  height: 40,
+                  decoration: const BoxDecoration(
+                    color: Colors.greenAccent,
+                    shape: BoxShape.circle,
+                  ),
+                  child: const Icon(Icons.arrow_forward, color: Colors.white),
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    },
+  );
+}
+
 }
 
 // Dummy Find Donor Pag
