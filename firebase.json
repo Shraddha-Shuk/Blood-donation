@@ -1,0 +1,35 @@
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "rhino-rakt-donors",
+          "appId": "1:411373140220:android:d0135f9c9c4781695eff79",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "rhino-rakt-donors",
+          "configurations": {
+            "android": "1:411373140220:android:d0135f9c9c4781695eff79",
+            "ios": "1:411373140220:ios:e84174860f84ad065eff79"
+          }
+        }
+      }
+    }
+  },
+  "functions": [
+    {
+      "source": "functions",
+      "codebase": "default",
+      "ignore": [
+        "node_modules",
+        ".git",
+        "firebase-debug.log",
+        "firebase-debug.*.log",
+        "*.local"
+      ]
+    }
+  ]
+}

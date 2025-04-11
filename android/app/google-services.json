@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "411373140220",
+    "project_id": "rhino-rakt-donors",
+    "storage_bucket": "rhino-rakt-donors.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:411373140220:android:d0135f9c9c4781695eff79",
+        "android_client_info": {
+          "package_name": "com.rhinorakt.donor"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDaFgrxN-K1EH3vhSD7jiH3TvUcIyRErkY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
