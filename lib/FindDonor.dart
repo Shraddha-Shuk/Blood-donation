@@ -88,12 +88,17 @@ class _FindDonorsPageState extends State<FindDonorsPage> {
     });
   }
 
+  onMapCreated(MapController mapController){
+    mapController = mapController;
+  }
+
   @override
   void dispose() {
     _debounce?.cancel();
     locationController.dispose();
     super.dispose();
   }
+
   @override
   void initState() {
     super.initState();
@@ -629,10 +634,12 @@ class _MapPageState extends State<MapPage> {
   bool _isSearching = false;
   List<Map<String, dynamic>> _locationSuggestions = [];
   Timer? _debounce;
+  MapController? mapController;
 
   @override
   void initState() {
     super.initState();
+    mapController = MapController();
     _selectedLocation = widget.initialLocation;
   }
 
@@ -841,6 +848,7 @@ class _MapPageState extends State<MapPage> {
           // Map
           Expanded(
             child: FlutterMap(
+              mapController: mapController,
               options: MapOptions(
                 center: _selectedLocation,
                 zoom: 15.0,

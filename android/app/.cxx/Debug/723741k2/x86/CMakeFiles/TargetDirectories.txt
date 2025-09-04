@@ -1,0 +1,2 @@
+/Users/mac/Documents/Manish-Parihar-Workspace/Blood-donation/android/app/.cxx/Debug/723741k2/x86/CMakeFiles/edit_cache.dir
+/Users/mac/Documents/Manish-Parihar-Workspace/Blood-donation/android/app/.cxx/Debug/723741k2/x86/CMakeFiles/rebuild_cache.dir

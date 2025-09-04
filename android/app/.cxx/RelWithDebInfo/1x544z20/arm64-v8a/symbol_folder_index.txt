@@ -1,0 +1,1 @@
+/Users/mac/Documents/Manish-Parihar-Workspace/Blood-donation/build/app/intermediates/cxx/RelWithDebInfo/1x544z20/obj/arm64-v8a

@@ -6482,7 +6482,6 @@ androidx.core.view.inputmethod.EditorInfoCompat:
     public static boolean isStylusHandwritingEnabled(android.view.inputmethod.EditorInfo)
     public static void setInitialSurroundingSubText(android.view.inputmethod.EditorInfo,java.lang.CharSequence,int)
     public static void setInitialSurroundingText(android.view.inputmethod.EditorInfo,java.lang.CharSequence)
-    public static void setStylusHandwritingEnabled(android.view.inputmethod.EditorInfo,boolean)
     private static void setSurroundingText(android.view.inputmethod.EditorInfo,java.lang.CharSequence,int,int)
     private static void trimLongSurroundingText(android.view.inputmethod.EditorInfo,java.lang.CharSequence,int,int)
 androidx.core.view.inputmethod.InputConnectionCompat$1
@@ -25415,17 +25414,7 @@ io.flutter.Log:
     public static void v(java.lang.String,java.lang.String,java.lang.Throwable)
     public static void wtf(java.lang.String,java.lang.String)
     public static void wtf(java.lang.String,java.lang.String,java.lang.Throwable)
-io.flutter.app.FlutterActivity
-io.flutter.app.FlutterActivityDelegate$1$1
-io.flutter.app.FlutterActivityDelegate$1
-io.flutter.app.FlutterActivityDelegate$ViewFactory
-io.flutter.app.FlutterActivityDelegate
-io.flutter.app.FlutterActivityEvents
 io.flutter.app.FlutterApplication
-io.flutter.app.FlutterFragmentActivity
-io.flutter.app.FlutterPlayStoreSplitApplication
-io.flutter.app.FlutterPluginRegistry$FlutterRegistrar
-io.flutter.app.FlutterPluginRegistry
 io.flutter.embedding.android.AndroidTouchProcessor$PointerChange
 io.flutter.embedding.android.AndroidTouchProcessor$PointerDeviceKind
 io.flutter.embedding.android.AndroidTouchProcessor$PointerSignalKind
@@ -25457,6 +25446,7 @@ io.flutter.embedding.android.FlutterActivityAndFragmentDelegate$Host:
 io.flutter.embedding.android.FlutterActivityAndFragmentDelegate:
     private static final int FLUTTER_SPLASH_VIEW_FALLBACK_ID
     private static final java.lang.String FRAMEWORK_RESTORATION_BUNDLE_KEY
+    static final java.lang.String ON_BACK_CALLBACK_ENABLED_KEY
     private static final java.lang.String PLUGINS_RESTORATION_BUNDLE_KEY
     private static final java.lang.String TAG
 io.flutter.embedding.android.FlutterActivityLaunchConfigs:
@@ -25696,9 +25686,9 @@ io.flutter.embedding.engine.loader.FlutterLoader:
     static final java.lang.String AUTOMATICALLY_REGISTER_PLUGINS_KEY
     private static final java.lang.String DEFAULT_KERNEL_BLOB
     private static final java.lang.String DEFAULT_LIBRARY
-    private static final java.lang.String DISABLE_SURFACE_CONTROL
-    private static final java.lang.String ENABLED_MERGED_PLATFORM_UI_THREAD_KEY
+    private static final java.lang.String DISABLE_MERGED_PLATFORM_UI_THREAD_KEY
     private static final java.lang.String ENABLE_IMPELLER_META_DATA_KEY
+    private static final java.lang.String ENABLE_SURFACE_CONTROL
     private static final java.lang.String ENABLE_VULKAN_VALIDATION_META_DATA_KEY
     static final java.lang.String FLUTTER_ASSETS_DIR_KEY
     private static final java.lang.String IMPELLER_BACKEND_META_DATA_KEY
@@ -25787,10 +25777,6 @@ io.flutter.embedding.engine.plugins.service.ServicePluginBinding:
     public abstract java.lang.Object getLifecycle()
     public abstract android.app.Service getService()
     public abstract void removeOnModeChangeListener(io.flutter.embedding.engine.plugins.service.ServiceAware$OnModeChangeListener)
-io.flutter.embedding.engine.plugins.shim.ShimPluginRegistry$1
-io.flutter.embedding.engine.plugins.shim.ShimPluginRegistry$ShimRegistrarAggregate
-io.flutter.embedding.engine.plugins.shim.ShimPluginRegistry
-io.flutter.embedding.engine.plugins.shim.ShimRegistrar
 io.flutter.embedding.engine.plugins.util.GeneratedPluginRegister:
     private static final java.lang.String TAG
     public void <init>()
@@ -25844,6 +25830,11 @@ io.flutter.embedding.engine.systemchannels.ProcessTextChannel:
     private static final java.lang.String TAG
 io.flutter.embedding.engine.systemchannels.RestorationChannel:
     private static final java.lang.String TAG
+io.flutter.embedding.engine.systemchannels.ScribeChannel:
+    public static final java.lang.String METHOD_IS_FEATURE_AVAILABLE
+    public static final java.lang.String METHOD_IS_STYLUS_HANDWRITING_AVAILABLE
+    public static final java.lang.String METHOD_START_STYLUS_HANDWRITING
+    private static final java.lang.String TAG
 io.flutter.embedding.engine.systemchannels.SettingsChannel:
     private static final java.lang.String ALWAYS_USE_24_HOUR_FORMAT
     private static final java.lang.String BRIEFLY_SHOW_PASSWORD
@@ -25888,9 +25879,6 @@ io.flutter.plugin.common.MethodChannel:
     private static final java.lang.String TAG
     public void resizeChannelBuffer(int)
     public void setWarnsOnChannelOverflow(boolean)
-io.flutter.plugin.common.PluginRegistry$PluginRegistrantCallback
-io.flutter.plugin.common.PluginRegistry$Registrar
-io.flutter.plugin.common.PluginRegistry$ViewDestroyListener
 io.flutter.plugin.common.PluginRegistry$WindowFocusChangedListener
 io.flutter.plugin.common.PluginRegistry
 io.flutter.plugin.common.StandardMessageCodec:
@@ -25921,6 +25909,9 @@ io.flutter.plugin.editing.InputConnectionAdaptor:
     private static int clampIndexToEditable(int,android.text.Editable)
 io.flutter.plugin.editing.ListenableEditingState:
     private static final java.lang.String TAG
+io.flutter.plugin.editing.ScribePlugin:
+    public void destroy()
+    public void setView(android.view.View)
 io.flutter.plugin.editing.SpellCheckPlugin:
     public static final java.lang.String END_INDEX_KEY
     private static final int MAX_SPELL_CHECK_SUGGESTIONS
@@ -26423,24 +26414,10 @@ io.flutter.view.AccessibilityBridge:
     public boolean getAccessibleNavigation()
     public int getHoveredObjectId()
     public void reset()
-io.flutter.view.FlutterMain$Settings
-io.flutter.view.FlutterMain
-io.flutter.view.FlutterNativeView$1
-io.flutter.view.FlutterNativeView$EngineLifecycleListenerImpl
-io.flutter.view.FlutterNativeView
 io.flutter.view.FlutterRunArguments
-io.flutter.view.FlutterView$1
-io.flutter.view.FlutterView$2
-io.flutter.view.FlutterView$3
-io.flutter.view.FlutterView$FirstFrameListener
-io.flutter.view.FlutterView$Provider
-io.flutter.view.FlutterView$SurfaceTextureRegistryEntry$1
-io.flutter.view.FlutterView$SurfaceTextureRegistryEntry
-io.flutter.view.FlutterView$ViewportMetrics
-io.flutter.view.FlutterView$ZeroSides
-io.flutter.view.FlutterView
 io.flutter.view.TextureRegistry$SurfaceProducer$Callback:
     public void onSurfaceCreated()
+    public void onSurfaceDestroyed()
 io.flutter.view.TextureRegistry$TextureEntry
 io.flutter.view.TextureRegistry:
     public void onTrimMemory(int)
@@ -41198,9 +41175,7 @@ androidx.lifecycle.LiveData:
     public abstract void changeActiveCounter()
     public abstract java.lang.Object getValue()
     public abstract boolean hasActiveObservers()
-androidx.lifecycle.MethodCallsLogger:
-    public static io.flutter.plugins.googlemaps.GoogleMapFactory getFactory()
-    public static boolean registerViewFactory()
+androidx.lifecycle.MethodCallsLogger
 androidx.lifecycle.MutableLiveData:
     public static androidx.lifecycle.MutableLiveData getInstance()
     public static androidx.lifecycle.MutableLiveData getInstance$1()
@@ -44424,7 +44399,7 @@ com.google.android.gms.auth.api.identity.AuthorizationResult:
     public static com.google.android.gms.auth.api.signin.GoogleSignInAccount toGoogleSignInAccount()
 com.google.android.gms.auth.api.identity.BeginSignInRequest$Builder
 com.google.android.gms.auth.api.identity.BeginSignInRequest$GoogleIdTokenRequestOptions$Builder:
-    public io.flutter.embedding.android.WindowInfoRepositoryCallbackAdapterWrapper zbf
+    public com.google.protobuf.RopeByteString$Balancer zbf
     public static com.google.android.gms.auth.api.identity.BeginSignInRequest$GoogleIdTokenRequestOptions build()
     public static void clearData()
     public static byte[] getRestorationData()
@@ -44492,7 +44467,13 @@ com.google.android.gms.auth.api.identity.SignInCredential:
 com.google.android.gms.auth.api.identity.SignInPassword:
     public final java.lang.String getId()
     public final java.lang.String getPassword()
-com.google.android.gms.auth.api.identity.zbb
+com.google.android.gms.auth.api.identity.zbb:
+    public java.lang.String zba
+    public static io.flutter.plugins.firebase.auth.GeneratedAndroidFirebaseAuth$PigeonMultiFactorSession build()
+    public static com.google.android.gms.auth.api.identity.zbb setId()
+    public final void zba(java.lang.String)
+    public final com.google.android.gms.auth.api.identity.zbc zbb()
+    public static final com.google.android.gms.auth.api.identity.zbb zbc(com.google.android.gms.auth.api.identity.zbc)
 com.google.android.gms.auth.api.identity.zbc:
     public final android.os.Bundle zba()
     public static java.lang.String zbb()
@@ -44746,7 +44727,6 @@ com.google.android.gms.common.GooglePlayServicesUtilLight:
 com.google.android.gms.common.GoogleSignatureVerifier:
     public void <init>(android.view.ViewGroup)
     public final void add()
-    public static com.google.protobuf.ByteString balance()
     public final com.google.firebase.firestore.MemoryCacheSettings build()
     public final com.google.firebase.messaging.reporting.MessagingClientEventExtension build()
     public static androidx.fragment.app.SpecialEffectsController createController()
@@ -44766,13 +44746,11 @@ com.google.android.gms.common.GoogleSignatureVerifier:
     public static com.google.android.datatransport.runtime.scheduling.jobscheduling.AutoValue_SchedulerConfig get()
     public final boolean get()
     public static int getAndIncrement()
-    public static int getDepthBinForLength(int)
     public static android.os.Bundle getMetadata()
     public static java.lang.Object getValue()
     public static int getWeight()
     public static com.google.android.gms.tasks.Task handle()
     public static int incrementAndGet()
-    public static void insert()
     public static boolean isGooglePublicSignedPackage()
     public static boolean isItalic()
     public static void onChanged()
@@ -49811,7 +49789,7 @@ com.google.firebase.messaging.ServiceStarter:
     public static com.google.firebase.messaging.ServiceStarter setAccessToken()
     public static com.google.firebase.messaging.ServiceStarter setAccessToken$1()
     public static void setAccessibilityFeatures()
-    public final void setAccessibilityMessageHandler(io.flutter.embedding.android.FlutterView$1)
+    public final void setAccessibilityMessageHandler(com.google.protobuf.RopeByteString$Balancer)
     public static com.google.firebase.messaging.ServiceStarter setAppNamespace()
     public static com.google.firebase.messaging.ServiceStarter setBearing()
     public static com.google.firebase.messaging.ServiceStarter setBounds()
@@ -49967,6 +49945,8 @@ com.google.firebase.platforminfo.GlobalLibraryVersionRegistrar:
     public static void addFontFamily()
     public static void attachHost()
     public static void buildOverlays()
+    public static void clearFocus()
+    public static void create()
     public static void deleteAllIndexes()
     public static void dispatchActivityCreated()
     public static boolean dispatchContextItemSelected()
@@ -49976,16 +49956,15 @@ com.google.firebase.platforminfo.GlobalLibraryVersionRegistrar:
     public static void dispatchResume()
     public static void dispatchStart()
     public static void dispatchStop()
+    public static void dispose$1()
     public final void execPendingActions()
     public static int fieldOrder()
     public static androidx.core.content.res.FontResourcesParserCompat$FontFileResourceEntry findBestEntry()
     public static com.google.android.gms.maps.model.LatLng fromScreenLocation()
-    public static io.flutter.embedding.engine.FlutterEngine get()
     public static java.util.Set getAllUserIds()
     public static java.util.List getChanges()
     public static kotlinx.coroutines.flow.Flow getFlow()
     public static androidx.core.content.res.FontResourcesParserCompat$FontFamilyFilesResourceEntry getFontFamily()
-    public static com.google.firebase.platforminfo.GlobalLibraryVersionRegistrar getInstance$1()
     public final android.net.Uri getLink()
     public static java.lang.String getLocalizedString()
     public static java.lang.String getNotificationChannelId()
@@ -50003,16 +49982,19 @@ com.google.firebase.platforminfo.GlobalLibraryVersionRegistrar:
     public static java.lang.String keyWithOldPrefix(java.lang.String)
     public static void lambda$buildOverlays$0()
     public static java.lang.String normalizePrefix()
+    public static void offset()
     public final void onActivityResult$1()
     public static android.view.View onCreateView()
     public final void onTypefaceRequestFailed()
     public final void onTypefaceRetrieved()
     public static android.os.Bundle paramsWithReservedKeysRemoved()
-    public static void put()
-    public static void remove$1()
     public static void removePendingOverlayMigrations()
+    public static void resize()
     public final void set(java.lang.Object)
+    public static void setDirection()
+    public static void synchronizeToNativeViewHierarchy()
     public static android.graphics.Point toScreenLocation()
+    public static void touch()
     public final void writeBoolList()
     public static void writeBoolListInternal()
     public static void writeBoolListInternal$1()
@@ -51784,7 +51766,41 @@ com.google.protobuf.RawMessageInfo:
 com.google.protobuf.Reader
 com.google.protobuf.RopeByteString$1:
     public final synthetic com.google.protobuf.RopeByteString this$0
-com.google.protobuf.RopeByteString$Balancer
+com.google.protobuf.RopeByteString$Balancer:
+    public static void addWindowLayoutInfoListener()
+    public static void announce()
+    public static com.google.protobuf.ByteString balance()
+    public static void clearClient()
+    public static boolean clipboardHasStrings()
+    public static void finishAutofillContext()
+    public static int getDepthBinForLength(int)
+    public final androidx.lifecycle.Lifecycle getLifecycle()
+    public final void hide()
+    public static void insert()
+    public static io.flutter.embedding.engine.dart.DartMessenger$DartMessengerTaskQueue makeBackgroundTaskQueue()
+    public final java.lang.String name(int)
+    public static void onFocus()
+    public static void onLongPress$1()
+    public static void onTap$1()
+    public static void onTooltip()
+    public static void popSystemNavigator()
+    public static void removeWindowLayoutInfoListener()
+    public static void requestAutofill()
+    public static void restoreSystemUiOverlays()
+    public static void sendAppPrivateCommand()
+    public static void sendMemoryPressureWarning()
+    public static void setApplicationSwitcherDescription()
+    public static void setClipboardData()
+    public static void setFrameworkHandlesBack()
+    public static void setPreferredOrientations()
+    public static void setSystemUiChangeListener()
+    public static void setSystemUiOverlayStyle()
+    public static void share()
+    public final void show()
+    public final int size()
+    public final void updateCustomAccessibilityActions()
+    public final void updateSemantics()
+    public final java.lang.String value(int)
 com.google.protobuf.RopeByteString$PieceIterator
 com.google.protobuf.RopeByteString:
     public static java.util.List asReadOnlyByteBufferList()
@@ -52017,12 +52033,13 @@ io.flutter.embedding.android.FlutterActivity:
     public abstract android.window.OnBackInvokedCallback createOnBackInvokedCallback()
     public abstract void detachFromFlutterEngine()
     public abstract android.app.Activity getActivity()
+    public abstract boolean getBackCallbackState()
     public abstract java.lang.String getCachedEngineGroupId()
     public abstract android.content.Context getContext()
     public final java.util.List getDartEntrypointArgs()
     public abstract java.lang.String getDartEntrypointLibraryUri()
     public abstract io.flutter.embedding.engine.FlutterEngine getFlutterEngine()
-    public abstract io.flutter.embedding.android.WindowInfoRepositoryCallbackAdapterWrapper getFlutterShellArgs()
+    public abstract com.google.protobuf.RopeByteString$Balancer getFlutterShellArgs()
     public final int getRenderMode()
     public final int getTransparencyMode()
     public abstract boolean isDebuggable()
@@ -52035,7 +52052,6 @@ io.flutter.embedding.android.FlutterActivity:
     public abstract io.flutter.plugin.platform.PlatformPlugin providePlatformPlugin()
     public abstract void registerOnBackInvokedCallback()
     public abstract void release()
-    public abstract void setFrameworkHandlesBack()
     public abstract boolean shouldAttachEngineToActivity()
     public abstract boolean shouldDispatchAppLifecycleState()
     public abstract boolean shouldHandleDeeplinking()
@@ -52050,13 +52066,14 @@ io.flutter.embedding.android.FlutterActivityAndFragmentDelegate$Host:
     public abstract void detachFromFlutterEngine()
     public abstract android.app.Activity getActivity()
     public abstract java.lang.String getAppBundlePath()
+    public abstract boolean getBackCallbackState()
     public abstract java.lang.String getCachedEngineGroupId()
     public abstract java.lang.String getCachedEngineId()
     public abstract android.content.Context getContext()
     public abstract java.util.List getDartEntrypointArgs()
     public abstract java.lang.String getDartEntrypointFunctionName()
     public abstract java.lang.String getDartEntrypointLibraryUri()
-    public abstract io.flutter.embedding.android.WindowInfoRepositoryCallbackAdapterWrapper getFlutterShellArgs()
+    public abstract com.google.protobuf.RopeByteString$Balancer getFlutterShellArgs()
     public abstract java.lang.String getInitialRoute()
     public abstract androidx.lifecycle.LifecycleRegistry getLifecycle()
     public abstract int getRenderMode()
@@ -52068,7 +52085,7 @@ io.flutter.embedding.android.FlutterActivityAndFragmentDelegate$Host:
     public abstract boolean popSystemNavigator()
     public abstract io.flutter.embedding.engine.FlutterEngine provideFlutterEngine()
     public abstract io.flutter.plugin.platform.PlatformPlugin providePlatformPlugin()
-    public abstract void setFrameworkHandlesBack()
+    public abstract void setFrameworkHandlesBack(boolean)
     public abstract boolean shouldAttachEngineToActivity()
     public abstract boolean shouldDestroyEngineWithHost()
     public abstract boolean shouldDispatchAppLifecycleState()
@@ -52142,42 +52159,14 @@ io.flutter.embedding.android.FlutterTextureView:
     public final boolean isSurfaceAvailableForRendering()
     public static boolean shouldNotify$1()
 io.flutter.embedding.android.FlutterView$$InternalSyntheticLambda$1$762624f87d4b99ec00b77933dfcd6d8964392d93a846a56a550193ddd9fabdff$0
-io.flutter.embedding.android.FlutterView$1:
-    public synthetic void <init>(io.flutter.embedding.engine.loader.FlutterLoader)
-    public static void announce()
-    public static void clearClient()
-    public static boolean clipboardHasStrings()
-    public static void finishAutofillContext()
-    public final androidx.lifecycle.Lifecycle getLifecycle()
-    public final void hide()
-    public final java.lang.String name(int)
-    public final void onAccessibilityChanged(boolean,boolean)
-    public static void onFocus()
-    public static void onLongPress$1()
-    public static void onTap$1()
-    public static void onTooltip()
-    public static void popSystemNavigator()
-    public static void requestAutofill()
-    public static void restoreSystemUiOverlays()
-    public static void sendAppPrivateCommand()
-    public static void setApplicationSwitcherDescription()
-    public static void setClipboardData()
-    public static void setFrameworkHandlesBack()
-    public static void setPreferredOrientations()
-    public static void setSystemUiChangeListener()
-    public static void setSystemUiOverlayStyle()
-    public static void share()
-    public final void show()
-    public final int size()
-    public final void updateCustomAccessibilityActions()
-    public final void updateSemantics()
-    public final java.lang.String value(int)
+io.flutter.embedding.android.FlutterView$1
 io.flutter.embedding.android.FlutterView$2
 io.flutter.embedding.android.FlutterView$3
 io.flutter.embedding.android.FlutterView$FlutterEngineAttachmentListener
 io.flutter.embedding.android.FlutterView$ZeroSides$EnumUnboxingLocalUtility
 io.flutter.embedding.android.FlutterView$ZeroSides
 io.flutter.embedding.android.FlutterView:
+    public io.flutter.embedding.engine.systemchannels.PlatformViewsChannel scribePlugin
     public static boolean acquireLatestImageViewFrame()
     public static void addOnFirstFrameRenderedListener()
     public static void attachOverlaySurfaceToRender()
@@ -52185,7 +52174,7 @@ io.flutter.embedding.android.FlutterView:
     public static int calculateShouldZeroSides()
     public static void convertToImageView()
     public static io.flutter.embedding.android.FlutterImageView createImageView()
-    public static io.flutter.embedding.android.WindowInfoRepositoryCallbackAdapterWrapper createWindowInfoRepo()
+    public static com.google.protobuf.RopeByteString$Balancer createWindowInfoRepo()
     public final android.view.PointerIcon getSystemPointerIcon()
     public final int guessBottomKeyboardInset(android.view.WindowInsets)
     public final boolean onTextInputKeyEvent()
@@ -52258,30 +52247,7 @@ io.flutter.embedding.android.RenderMode$EnumUnboxingLocalUtility
 io.flutter.embedding.android.RenderMode
 io.flutter.embedding.android.TransparencyMode$EnumUnboxingLocalUtility
 io.flutter.embedding.android.TransparencyMode
-io.flutter.embedding.android.WindowInfoRepositoryCallbackAdapterWrapper:
-    public static void addWindowLayoutInfoListener()
-    public final void asyncWaitForVsync()
-    public static com.google.maps.android.heatmaps.HeatmapTileProvider build()
-    public final void cancel$1()
-    public static void delete()
-    public static void getIdToken()
-    public static void linkWithCredential()
-    public static void linkWithProvider()
-    public static io.flutter.embedding.engine.dart.DartMessenger$DartMessengerTaskQueue makeBackgroundTaskQueue()
-    public static android.view.Choreographer$FrameCallback obtainFrameCallback()
-    public static void reauthenticateWithCredential()
-    public static void reauthenticateWithProvider()
-    public static void reload()
-    public static void removeWindowLayoutInfoListener()
-    public static void sendEmailVerification()
-    public final void setActivity(android.app.Activity)
-    public static void unlink()
-    public static void updateEmail()
-    public static void updatePassword()
-    public static void updatePhoneNumber()
-    public static void updateProfile()
-    public static void verifyBeforeUpdateEmail()
-    public final void writeFrame()
+io.flutter.embedding.android.WindowInfoRepositoryCallbackAdapterWrapper
 io.flutter.embedding.engine.FlutterEngine:
     public final com.google.firebase.messaging.ServiceStarter deferredComponentChannel
     public final androidx.activity.result.ActivityResultRegistry$3 localizationChannel
@@ -52303,14 +52269,21 @@ io.flutter.embedding.engine.FlutterEngine:
     public static com.google.firebase.messaging.ServiceStarter getProcessTextChannel()
     public static io.flutter.embedding.engine.renderer.FlutterRenderer getRenderer()
     public static com.google.android.gms.auth.api.identity.BeginSignInRequest$GoogleIdTokenRequestOptions$Builder getRestorationChannel()
+    public static io.flutter.embedding.engine.systemchannels.PlatformViewsChannel getScribeChannel()
     public static io.flutter.embedding.engine.systemchannels.SettingsChannel getSettingsChannel()
     public static io.flutter.embedding.engine.systemchannels.PlatformViewsChannel getSpellCheckChannel()
-    public static io.flutter.embedding.engine.systemchannels.KeyEventChannel getSystemChannel()
+    public static com.google.protobuf.RopeByteString$Balancer getSystemChannel()
     public static io.flutter.embedding.engine.systemchannels.PlatformViewsChannel getTextInputChannel()
     public static boolean isAttachedToJni()
     public static io.flutter.embedding.engine.FlutterEngine spawn()
     public static void updateDisplayMetrics()
-io.flutter.embedding.engine.FlutterEngineCache
+io.flutter.embedding.engine.FlutterEngineCache:
+    public static io.flutter.embedding.engine.FlutterEngine get()
+    public static io.flutter.plugins.googlemaps.GoogleMapFactory getFactory()
+    public static io.flutter.embedding.engine.FlutterEngineCache getInstance()
+    public static void put()
+    public static boolean registerViewFactory()
+    public static void remove()
 io.flutter.embedding.engine.FlutterEngineConnectionRegistry$$InternalSyntheticThrowCCEIfNotNull$175$2bc99d662947ddb00c95c0c5ed77b077abdc96ce627093d50768f9c49097c5fe$0
 io.flutter.embedding.engine.FlutterEngineConnectionRegistry$$InternalSyntheticThrowCCEIfNotNull$175$2bc99d662947ddb00c95c0c5ed77b077abdc96ce627093d50768f9c49097c5fe$1
 io.flutter.embedding.engine.FlutterEngineConnectionRegistry$$InternalSyntheticThrowCCEIfNotNull$175$2bc99d662947ddb00c95c0c5ed77b077abdc96ce627093d50768f9c49097c5fe$2
@@ -52321,7 +52294,28 @@ io.flutter.embedding.engine.FlutterEngineConnectionRegistry$$InternalSyntheticTh
 io.flutter.embedding.engine.FlutterEngineConnectionRegistry$$InternalSyntheticThrowCCEIfNotNull$21$5b6f738fea16cf110fe5a425fb82797844f39a3537a77b68ae0e18ebf81000ff$0
 io.flutter.embedding.engine.FlutterEngineConnectionRegistry$$InternalSyntheticThrowCCEIfNotNull$21$7c617d643e8722b66b2c0922c89ddb45952165af1626761ce6a95e65bd987ec4$0
 io.flutter.embedding.engine.FlutterEngineConnectionRegistry$1
-io.flutter.embedding.engine.FlutterEngineConnectionRegistry$DefaultFlutterAssets
+io.flutter.embedding.engine.FlutterEngineConnectionRegistry$DefaultFlutterAssets$$InternalSyntheticThrowCCEIfNotNull$19$71b95bf8974dff853c6953974bfe6e3d1279a4f4d8604c4f37557baaeb4933b2$0
+io.flutter.embedding.engine.FlutterEngineConnectionRegistry$DefaultFlutterAssets:
+    public synthetic void <init>(io.flutter.embedding.engine.loader.FlutterLoader)
+    public static io.flutter.embedding.engine.FlutterEngineConnectionRegistry$DefaultFlutterAssets addLenient()
+    public static com.google.android.gms.maps.model.TileOverlayOptions build()
+    public static com.google.protobuf.RopeByteString$Balancer build()
+    public final void cancelled()
+    public static void checkNameAndValue()
+    public static void createForPlatformViewLayer()
+    public static java.util.Map encodeKeyEvent()
+    public static int getOffsetAfter()
+    public static int getOffsetBefore()
+    public final boolean isEmojiModifier(int)
+    public static boolean isEmojiModifierBase()
+    public final boolean isRegionalIndicatorSymbol(int)
+    public static boolean isTagSpecChar()
+    public static synthetic void lambda$resize$0()
+    public static io.flutter.embedding.engine.FlutterEngineConnectionRegistry$DefaultFlutterAssets removeAll()
+    public static void sendFlutterKeyEvent()
+    public static io.flutter.embedding.engine.FlutterEngineConnectionRegistry$DefaultFlutterAssets set()
+    public static void setTileProvider()
+    public static void synchronizeToNativeViewHierarchy$1()
 io.flutter.embedding.engine.FlutterEngineConnectionRegistry$FlutterEngineActivityPluginBinding
 io.flutter.embedding.engine.FlutterEngineConnectionRegistry$FlutterEngineBroadcastReceiverPluginBinding
 io.flutter.embedding.engine.FlutterEngineConnectionRegistry$FlutterEngineContentProviderPluginBinding
@@ -52401,6 +52395,7 @@ io.flutter.embedding.engine.FlutterEngineGroupCache:
     public static boolean isZoomControlsEnabled()
     public static boolean isZoomGesturesEnabled()
     public static androidx.activity.result.ActivityResultRegistry$3 newBuilder(java.lang.String)
+    public final void onAccessibilityChanged(boolean,boolean)
     public final void onConnected()
     public final void onConnectionSuspended()
     public static com.google.firestore.v1.Value parseList()
@@ -52457,9 +52452,6 @@ io.flutter.embedding.engine.FlutterEngineGroupCache:
     public final void writeStringList()
     public final void writeUInt32List()
     public final void writeUInt64List()
-    public final void zba(java.lang.String)
-    public final com.google.android.gms.auth.api.identity.zbc zbb()
-    public static final io.flutter.embedding.engine.FlutterEngineGroupCache zbc(com.google.android.gms.auth.api.identity.zbc)
     public static void zza$2()
     public static void zzb()
     public static void zzc$1()
@@ -52520,9 +52512,7 @@ io.flutter.embedding.engine.loader.FlutterLoader$1
 io.flutter.embedding.engine.loader.FlutterLoader$InitResult:
     public final java.lang.String dataDirPath
 io.flutter.embedding.engine.loader.FlutterLoader$Settings:
-    public static io.flutter.plugins.firebase.auth.GeneratedAndroidFirebaseAuth$PigeonMultiFactorSession build()
     public static java.lang.String getLogTag()
-    public static io.flutter.embedding.engine.loader.FlutterLoader$Settings setId()
 io.flutter.embedding.engine.loader.FlutterLoader:
     public static boolean automaticallyRegisterPlugins()
     public static void cancel()
@@ -52549,13 +52539,13 @@ io.flutter.embedding.engine.mutatorsstack.FlutterMutatorsStack$FlutterMutatorTyp
     public static final enum io.flutter.embedding.engine.mutatorsstack.FlutterMutatorsStack$FlutterMutatorType OPACITY
 io.flutter.embedding.engine.plugins.FlutterPlugin$FlutterAssets
 io.flutter.embedding.engine.plugins.FlutterPlugin$FlutterPluginBinding:
-    public final io.flutter.embedding.android.FlutterView$1 flutterAssets
+    public final io.flutter.embedding.engine.FlutterEngineConnectionRegistry$DefaultFlutterAssets flutterAssets
     public final io.flutter.embedding.engine.FlutterEngine flutterEngine
     public final io.flutter.embedding.engine.FlutterEngineGroup group
     public final io.flutter.view.TextureRegistry textureRegistry
     public static android.content.Context getApplicationContext()
     public static io.flutter.plugin.common.BinaryMessenger getBinaryMessenger()
-    public static androidx.lifecycle.MethodCallsLogger getPlatformViewRegistry()
+    public static io.flutter.embedding.engine.FlutterEngineCache getPlatformViewRegistry()
 io.flutter.embedding.engine.plugins.PluginRegistry
 io.flutter.embedding.engine.plugins.activity.ActivityControlSurface
 io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding$OnSaveInstanceStateListener
@@ -52585,6 +52575,7 @@ io.flutter.embedding.engine.renderer.FlutterRenderer$ImageReaderSurfaceProducer$
     public static boolean canPrune()
     public final void close()
     public static io.flutter.embedding.engine.renderer.FlutterRenderer$ImageReaderSurfaceProducer$PerImage dequeueImage()
+    public static boolean imageQueueIsEmpty()
     public static void lambda$new$0()
     public static io.flutter.embedding.engine.renderer.FlutterRenderer$ImageReaderSurfaceProducer$PerImage queueImage()
 io.flutter.embedding.engine.renderer.FlutterRenderer$SurfaceTextureRegistryEntry$$InternalSyntheticLambda$3$94cf53601e2b3dba48150a38a02c2ffb6f6f636971bfaf5ca2f1473c12308333$0
@@ -52603,7 +52594,6 @@ io.flutter.embedding.engine.renderer.FlutterRenderer:
     public static boolean debugForceSurfaceProducerGlTextures
     static void <clinit>()
     public static void access$400(io.flutter.embedding.engine.renderer.FlutterRenderer,long)
-    public static void access$700(io.flutter.embedding.engine.renderer.FlutterRenderer)
     public final void addIsDisplayingFlutterUiListener(io.flutter.embedding.engine.renderer.FlutterUiDisplayListener)
     public static void clearDeadListeners()
     public final void dispatchPointerDataPacket(java.nio.ByteBuffer,int)
@@ -52614,7 +52604,7 @@ io.flutter.embedding.engine.renderer.FlutterRenderer:
     public static io.flutter.view.TextureRegistry$SurfaceTextureEntry registerSurfaceTexture$1()
     public static void registerTexture()
     public final void removeIsDisplayingFlutterUiListener(io.flutter.embedding.engine.renderer.FlutterUiDisplayListener)
-    public static void scheduleEngineFrame()
+    public final void scheduleEngineFrame()
     public static void setSemanticsEnabled()
     public static void setViewportMetrics()
     public final void startRenderingToSurface(android.view.Surface,boolean)
@@ -52639,10 +52629,7 @@ io.flutter.embedding.engine.systemchannels.DeferredComponentChannel
 io.flutter.embedding.engine.systemchannels.KeyEventChannel$$InternalSyntheticLambda$2$2a0e2abef616d6cea4b4f1a8a10072820346c8d644dd4afd70e232766d86619d$0
 io.flutter.embedding.engine.systemchannels.KeyEventChannel$EventResponseHandler
 io.flutter.embedding.engine.systemchannels.KeyEventChannel$FlutterKeyEvent
-io.flutter.embedding.engine.systemchannels.KeyEventChannel:
-    public static java.util.Map encodeKeyEvent()
-    public static void sendFlutterKeyEvent()
-    public static void sendMemoryPressureWarning()
+io.flutter.embedding.engine.systemchannels.KeyEventChannel
 io.flutter.embedding.engine.systemchannels.KeyboardChannel$1
 io.flutter.embedding.engine.systemchannels.KeyboardChannel$KeyboardMethodHandler
 io.flutter.embedding.engine.systemchannels.KeyboardChannel
@@ -52710,33 +52697,7 @@ io.flutter.embedding.engine.systemchannels.PlatformChannel$SystemUiMode$EnumUnbo
 io.flutter.embedding.engine.systemchannels.PlatformChannel$SystemUiMode
 io.flutter.embedding.engine.systemchannels.PlatformChannel
 io.flutter.embedding.engine.systemchannels.PlatformViewsChannel$1$$InternalSyntheticLambda$2$06a0318edf43c68b535b7196357da0ff9ff18d83e350c6ea0dc6b00c1c7bbad1$0
-io.flutter.embedding.engine.systemchannels.PlatformViewsChannel$1$$InternalSyntheticThrowCCEIfNotNull$19$292af8debac9b4473fd5f02c1b9e994721434a8adfdf8d12e5be289e7b6520d1$0
-io.flutter.embedding.engine.systemchannels.PlatformViewsChannel$1:
-    public static io.flutter.embedding.engine.systemchannels.PlatformViewsChannel$1 addLenient()
-    public static com.google.android.gms.maps.model.TileOverlayOptions build()
-    public static io.flutter.embedding.android.FlutterView$1 build()
-    public final void cancelled()
-    public static void checkNameAndValue()
-    public static void clearFocus()
-    public static void create()
-    public static void createForPlatformViewLayer()
-    public static void dispose$1()
-    public static int getOffsetAfter()
-    public static int getOffsetBefore()
-    public final boolean isEmojiModifier(int)
-    public static boolean isEmojiModifierBase()
-    public final boolean isRegionalIndicatorSymbol(int)
-    public static boolean isTagSpecChar()
-    public static synthetic void lambda$resize$0()
-    public static void offset()
-    public static io.flutter.embedding.engine.systemchannels.PlatformViewsChannel$1 removeAll()
-    public static void resize()
-    public static io.flutter.embedding.engine.systemchannels.PlatformViewsChannel$1 set()
-    public static void setDirection()
-    public static void setTileProvider()
-    public static void synchronizeToNativeViewHierarchy()
-    public static void synchronizeToNativeViewHierarchy$1()
-    public static void touch()
+io.flutter.embedding.engine.systemchannels.PlatformViewsChannel$1
 io.flutter.embedding.engine.systemchannels.PlatformViewsChannel$PlatformViewBufferResized
 io.flutter.embedding.engine.systemchannels.PlatformViewsChannel$PlatformViewBufferSize
 io.flutter.embedding.engine.systemchannels.PlatformViewsChannel$PlatformViewCreationRequest$RequestedDisplayMode$EnumUnboxingLocalUtility
@@ -52767,7 +52728,11 @@ io.flutter.embedding.engine.systemchannels.PlatformViewsChannel:
     public static void initializeMethodChannel()
     public static varargs java.lang.Object invokeOptional()
     public static boolean isDartBackgroundHandlerRegistered()
+    public static void isFeatureAvailable()
+    public static boolean isFeatureAvailable()
     public final boolean isNotRunning()
+    public static void isStylusHandwritingAvailable()
+    public final boolean isStylusHandwritingAvailable()
     public final boolean isSupported(java.lang.Object)
     public static void lambda$startBackgroundIsolate$0()
     public static void lambda$startBackgroundIsolate$1()
@@ -52803,6 +52768,7 @@ io.flutter.embedding.engine.systemchannels.PlatformViewsChannel:
     public static io.flutter.embedding.engine.systemchannels.PlatformViewsChannel setPath()
     public static io.flutter.embedding.engine.systemchannels.PlatformViewsChannel setPlatformBrightness()
     public static void setPlatformViewsHandler()
+    public static void setScribeMethodHandler()
     public static io.flutter.embedding.engine.systemchannels.PlatformViewsChannel setServiceConfig()
     public static void setSpellCheckMethodHandler()
     public static void setTextInputMethodHandler()
@@ -52812,6 +52778,8 @@ io.flutter.embedding.engine.systemchannels.PlatformViewsChannel:
     public static io.flutter.embedding.engine.systemchannels.PlatformViewsChannel setUser()
     public static io.flutter.embedding.engine.systemchannels.PlatformViewsChannel setValue()
     public static void startBackgroundIsolate()
+    public static void startStylusHandwriting()
+    public static void startStylusHandwriting$1()
     public static void unspecifiedAction()
     public static void updateEditingState()
     public static void updateEditingStateWithDeltas()
@@ -52821,6 +52789,29 @@ io.flutter.embedding.engine.systemchannels.ProcessTextChannel$ProcessTextMethodH
 io.flutter.embedding.engine.systemchannels.ProcessTextChannel
 io.flutter.embedding.engine.systemchannels.RestorationChannel$2
 io.flutter.embedding.engine.systemchannels.RestorationChannel
+io.flutter.embedding.engine.systemchannels.ScribeChannel$1:
+    public final void asyncWaitForVsync()
+    public static com.google.maps.android.heatmaps.HeatmapTileProvider build()
+    public final void cancel$1()
+    public static void delete()
+    public static void getIdToken()
+    public static void linkWithCredential()
+    public static void linkWithProvider()
+    public static android.view.Choreographer$FrameCallback obtainFrameCallback()
+    public static void reauthenticateWithCredential()
+    public static void reauthenticateWithProvider()
+    public static void reload()
+    public static void sendEmailVerification()
+    public final void setActivity(android.app.Activity)
+    public static void unlink()
+    public static void updateEmail()
+    public static void updatePassword()
+    public static void updatePhoneNumber()
+    public static void updateProfile()
+    public static void verifyBeforeUpdateEmail()
+    public final void writeFrame()
+io.flutter.embedding.engine.systemchannels.ScribeChannel$ScribeMethodHandler
+io.flutter.embedding.engine.systemchannels.ScribeChannel
 io.flutter.embedding.engine.systemchannels.SettingsChannel$ConfigurationQueue$1
 io.flutter.embedding.engine.systemchannels.SettingsChannel$ConfigurationQueue$SentConfiguration:
     static void <clinit>()
@@ -52899,6 +52890,7 @@ io.flutter.plugin.editing.FlutterTextUtils
 io.flutter.plugin.editing.ImeSyncDeferringInsetsCallback$1
 io.flutter.plugin.editing.InputConnectionAdaptor$KeyboardDelegate
 io.flutter.plugin.editing.InputConnectionAdaptor:
+    public final io.flutter.embedding.engine.systemchannels.PlatformViewsChannel scribeChannel
     public static boolean doPerformContextMenuAction()
     public final boolean handleKeyEvent()
     public static byte[] readStreamFully()
@@ -52913,6 +52905,7 @@ io.flutter.plugin.editing.ListenableEditingState:
     public static int getSelectionStart()
     public final void notifyListener(io.flutter.plugin.editing.ListenableEditingState$EditingStateWatcher,boolean,boolean,boolean)
     public static void setComposingRange()
+io.flutter.plugin.editing.ScribePlugin
 io.flutter.plugin.editing.SpellCheckPlugin:
     public static void destroy()
     public static void performSpellCheck()
@@ -52932,6 +52925,7 @@ io.flutter.plugin.editing.TextInputPlugin$2
 io.flutter.plugin.editing.TextInputPlugin$InputTarget
 io.flutter.plugin.editing.TextInputPlugin$MinMax
 io.flutter.plugin.editing.TextInputPlugin:
+    public final io.flutter.embedding.engine.systemchannels.PlatformViewsChannel scribeChannel
     public static void autofill()
     public static void clearTextInputClient()
     public static android.view.inputmethod.InputConnection createInputConnection()
@@ -52952,7 +52946,7 @@ io.flutter.plugin.editing.TextInputPlugin:
     public final void unlockPlatformViewInputConnection()
 io.flutter.plugin.localization.LocalizationPlugin$1
 io.flutter.plugin.localization.LocalizationPlugin:
-    public final io.flutter.embedding.android.WindowInfoRepositoryCallbackAdapterWrapper localizationMessageHandler
+    public final io.flutter.embedding.engine.systemchannels.ScribeChannel$1 localizationMessageHandler
     public static java.util.Locale resolveNativeLocale()
 io.flutter.plugin.mouse.MouseCursorPlugin$1
 io.flutter.plugin.mouse.MouseCursorPlugin$2:
@@ -52977,7 +52971,7 @@ io.flutter.plugin.platform.PlatformPlugin$2:
 io.flutter.plugin.platform.PlatformPlugin$3
 io.flutter.plugin.platform.PlatformPlugin$PlatformPluginDelegate
 io.flutter.plugin.platform.PlatformPlugin:
-    public final io.flutter.embedding.android.FlutterView$1 mPlatformMessageHandler
+    public final com.google.protobuf.RopeByteString$Balancer mPlatformMessageHandler
     public static boolean clipboardHasStrings()
     public static void destroy()
     public static java.lang.CharSequence getClipboardData()
@@ -53040,7 +53034,7 @@ io.flutter.plugin.platform.PlatformViewsController:
     public static void detachTextInputPlugin()
     public final void diposeAllViews()
     public static void ensureValidRequest()
-    public static androidx.lifecycle.MethodCallsLogger getRegistry()
+    public static io.flutter.embedding.engine.FlutterEngineCache getRegistry()
     public static boolean initializePlatformViewIfNeeded()
     public static synthetic void lambda$configureForTextureLayerComposition$1()
     public static synthetic void lambda$configureForVirtualDisplay$0()
@@ -54148,7 +54142,7 @@ io.flutter.plugins.googlemaps.GoogleMapsPlugin$1
 io.flutter.plugins.googlemaps.HeatmapBuilder
 io.flutter.plugins.googlemaps.HeatmapController:
     public final void clearTileCache$1()
-    public final void remove$2()
+    public final void remove$1()
 io.flutter.plugins.googlemaps.HeatmapsController
 io.flutter.plugins.googlemaps.LifecycleProvider
 io.flutter.plugins.googlemaps.MarkerBuilder:
@@ -54692,7 +54686,7 @@ io.flutter.plugins.googlemaps.TileOverlayBuilder
 io.flutter.plugins.googlemaps.TileOverlayController:
     public final void clearTileCache$1()
     public static com.google.android.gms.maps.model.TileOverlay getTileOverlay$1()
-    public final void remove$2()
+    public final void remove$1()
 io.flutter.plugins.googlemaps.TileOverlaysController
 io.flutter.plugins.googlemaps.TileProviderController$Worker$$InternalSyntheticLambda$3$2cf673aa1c2a3dc091a30619249f1bccaaa9ab6a9ffdf24d278cad1c9d45731b$0
 io.flutter.plugins.googlemaps.TileProviderController$Worker:
@@ -54905,13 +54899,14 @@ io.flutter.view.AccessibilityBridge$AccessibilityFeature$EnumUnboxingLocalUtilit
 io.flutter.view.AccessibilityBridge$AccessibilityFeature
 io.flutter.view.AccessibilityBridge$Action:
     public static final enum io.flutter.view.AccessibilityBridge$Action FOCUS
+    public static final enum io.flutter.view.AccessibilityBridge$Action SCROLL_TO_OFFSET
 io.flutter.view.AccessibilityBridge$Flag$EnumUnboxingLocalUtility:
     public static final enum int HAS_EXPANDED_STATE
+    public static final enum int HAS_SELECTED_STATE
     public static final enum int IS_CHECK_STATE_MIXED
     public static final enum int IS_EXPANDED
     public static final enum int IS_KEYBOARD_KEY
     public static final enum int IS_MULTILINE
-    public static final enum int IS_SLIDER
     static void <clinit>()
     public static int _valueOf(java.lang.String)
     public static int[] _values()
@@ -54988,7 +54983,7 @@ io.flutter.view.TextureRegistry$OnFrameConsumedListener:
     public abstract void onFrameConsumed()
 io.flutter.view.TextureRegistry$SurfaceProducer$Callback:
     public abstract void onSurfaceAvailable()
-    public abstract void onSurfaceDestroyed()
+    public abstract void onSurfaceCleanup()
 io.flutter.view.TextureRegistry:
     public abstract io.flutter.view.TextureRegistry$ImageTextureEntry createImageTexture()
     public abstract io.flutter.view.TextureRegistry$SurfaceProducer createSurfaceProducer()
@@ -56190,7 +56185,7 @@ io.grpc.okhttp.OkHttpClientStream$TransportState:
     public static void streamReady()
     public static io.perfmark.Tag tag()
 io.grpc.okhttp.OkHttpClientStream:
-    public static io.flutter.embedding.android.WindowInfoRepositoryCallbackAdapterWrapper abstractClientStreamSink()
+    public static io.flutter.embedding.engine.systemchannels.ScribeChannel$1 abstractClientStreamSink()
     public final io.grpc.internal.AbstractClientStream$Sink abstractClientStreamSink()
     public static synthetic okio.Buffer access$500()
     public final io.grpc.Attributes getAttributes()
@@ -56481,7 +56476,7 @@ io.grpc.okhttp.internal.proxy.HttpUrl:
 io.grpc.okhttp.internal.proxy.Request$1
 io.grpc.okhttp.internal.proxy.Request$Builder:
     public static io.grpc.okhttp.internal.proxy.Request$Builder build()
-    public static io.flutter.embedding.android.FlutterView$1 headers()
+    public static com.google.protobuf.RopeByteString$Balancer headers()
     public static io.grpc.okhttp.internal.proxy.HttpUrl httpUrl()
     public static io.grpc.okhttp.internal.proxy.Request$Builder url()
 io.grpc.okhttp.internal.proxy.Request
@@ -57298,6 +57293,8 @@ kotlinx.coroutines.EventLoopImplPlatform:
     public final void unpark()
 kotlinx.coroutines.EventLoopKt
 kotlinx.coroutines.EventLoop_commonKt:
+    public static final synthetic io.flutter.embedding.engine.loader.FlutterLoader$Settings access$getCLOSED_EMPTY$p()
+    public static final synthetic io.flutter.embedding.engine.loader.FlutterLoader$Settings access$getDISPOSED_TASK$p()
     public static final long delayToNanos(long)
 kotlinx.coroutines.ExceptionsKt
 kotlinx.coroutines.ExecutorCoroutineDispatcher$Key$1
@@ -57393,6 +57390,12 @@ kotlinx.coroutines.JobSupport:
     public static java.lang.Object tryMakeCompletingSlowPath()
     public final boolean tryWaitForChild(kotlinx.coroutines.JobSupport$Finishing,kotlinx.coroutines.ChildHandleNode,java.lang.Object)
 kotlinx.coroutines.JobSupportKt:
+    public static final synthetic io.flutter.embedding.engine.loader.FlutterLoader$Settings access$getCOMPLETING_ALREADY$p()
+    public static final synthetic io.flutter.embedding.engine.loader.FlutterLoader$Settings access$getCOMPLETING_RETRY$p()
+    public static final synthetic kotlinx.coroutines.Empty access$getEMPTY_ACTIVE$p()
+    public static final synthetic kotlinx.coroutines.Empty access$getEMPTY_NEW$p()
+    public static final synthetic io.flutter.embedding.engine.loader.FlutterLoader$Settings access$getSEALED$p()
+    public static final synthetic io.flutter.embedding.engine.loader.FlutterLoader$Settings access$getTOO_LATE_TO_CANCEL$p()
     public static final java.lang.Object boxIncomplete(java.lang.Object)
 kotlinx.coroutines.LazyDeferredCoroutine
 kotlinx.coroutines.LazyStandaloneCoroutine
@@ -57541,7 +57544,7 @@ kotlinx.coroutines.channels.ChannelResult:
 kotlinx.coroutines.channels.ChannelSegment$$InternalSyntheticBackportWithForwarding$2$6f7cae9946c5b86424e4e5c7a6884a900669cd56eb800ecaba91e55e82091194$0
 kotlinx.coroutines.channels.ChannelSegment:
     public static void cleanElement$kotlinx_coroutines_core()
-    public final java.lang.Object getAndSetState$kotlinx_coroutines_core(int,com.google.android.gms.common.internal.TelemetryLoggingOptions$Builder)
+    public final java.lang.Object getAndSetState$kotlinx_coroutines_core(int,io.flutter.embedding.engine.loader.FlutterLoader$Settings)
     public static kotlinx.coroutines.channels.BufferedChannel getChannel()
     public final java.lang.Object getElement$kotlinx_coroutines_core(int)
     public final java.lang.Object retrieveElement$kotlinx_coroutines_core(int)
@@ -57594,8 +57597,7 @@ kotlinx.coroutines.flow.MutableStateFlow:
 kotlinx.coroutines.flow.SafeFlow
 kotlinx.coroutines.flow.SharedFlow
 kotlinx.coroutines.flow.SharedFlowImpl
-kotlinx.coroutines.flow.SharedFlowKt:
-    public static final com.google.android.gms.common.internal.TelemetryLoggingOptions$Builder NO_VALUE
+kotlinx.coroutines.flow.SharedFlowKt
 kotlinx.coroutines.flow.StateFlow
 kotlinx.coroutines.flow.StateFlowImpl$$InternalSyntheticThrowCCEIfNotNull$250$48f8e1a998bfe838c6c4c78d934377956702ea666a83e7852d7dcc1778b7fce1$0
 kotlinx.coroutines.flow.StateFlowImpl:
@@ -57607,6 +57609,8 @@ kotlinx.coroutines.flow.StateFlowImpl:
     public final java.lang.Object getValue()
 kotlinx.coroutines.flow.StateFlowKt:
     public static final kotlinx.coroutines.flow.StateFlowImpl MutableStateFlow(java.lang.Object)
+    public static final synthetic io.flutter.embedding.engine.loader.FlutterLoader$Settings access$getNONE$p()
+    public static final synthetic io.flutter.embedding.engine.loader.FlutterLoader$Settings access$getPENDING$p()
 kotlinx.coroutines.flow.StateFlowSlot$$InternalSyntheticBackportWithForwarding$2$00e283133301a383e27fa4e7fdd86cb31b10130a1eba01a050b186f52cb717ba$0
 kotlinx.coroutines.flow.StateFlowSlot$$InternalSyntheticBackportWithForwarding$2$00e283133301a383e27fa4e7fdd86cb31b10130a1eba01a050b186f52cb717ba$1
 kotlinx.coroutines.flow.StateFlowSlot$$InternalSyntheticBackportWithForwarding$2$c628036b02d1374e5fc36032fdc1de7a283ea2cf3b3a3101e414ddb73ac4ce26$0
@@ -57654,8 +57658,8 @@ kotlinx.coroutines.flow.internal.NoOpContinuation:
     public static final kotlin.coroutines.EmptyCoroutineContext context
 kotlinx.coroutines.flow.internal.NopCollector
 kotlinx.coroutines.flow.internal.NullSurrogateKt:
-    public static final com.google.android.gms.common.internal.TelemetryLoggingOptions$Builder DONE
-    public static final com.google.android.gms.common.internal.TelemetryLoggingOptions$Builder UNINITIALIZED
+    public static final io.flutter.embedding.engine.loader.FlutterLoader$Settings DONE
+    public static final io.flutter.embedding.engine.loader.FlutterLoader$Settings UNINITIALIZED
 kotlinx.coroutines.flow.internal.SafeCollector$collectContextSize$1:
     public final java.lang.Integer invoke()
 kotlinx.coroutines.flow.internal.SafeCollector:
@@ -57678,6 +57682,8 @@ kotlinx.coroutines.internal.AtomicOp:
 kotlinx.coroutines.internal.ClassValueCtorCache$$InternalSyntheticApiModelOutline$1$97f27c5c025b36748558662d0fdace55db42241d39e429183cf0e9f573ba6d5b$0
 kotlinx.coroutines.internal.ClassValueCtorCache$cache$1
 kotlinx.coroutines.internal.ClassValueCtorCache
+kotlinx.coroutines.internal.ConcurrentLinkedListKt:
+    public static final synthetic io.flutter.embedding.engine.loader.FlutterLoader$Settings access$getCLOSED$p()
 kotlinx.coroutines.internal.ConcurrentLinkedListNode$$InternalSyntheticBackportWithForwarding$2$031b839733a764a7b5245a29bbe71cbf6cbe17866e563449806beb5fcd8d07ce$0
 kotlinx.coroutines.internal.ConcurrentLinkedListNode$$InternalSyntheticBackportWithForwarding$2$5078c47261047ce3233d194b821a1a206197fd0cd4382e86c48bee83a79570ea$0
 kotlinx.coroutines.internal.ConcurrentLinkedListNode$$InternalSyntheticBackportWithForwarding$2$9d0975a597367a7fcec34b57396aed90ec2c745fcbd2913401de90a12ff0178d$0
@@ -57708,6 +57714,8 @@ kotlinx.coroutines.internal.DispatchedContinuation:
     public static boolean postponeCancellation$kotlinx_coroutines_core()
     public static void release$kotlinx_coroutines_core()
     public static java.lang.Throwable tryReleaseClaimedContinuation$kotlinx_coroutines_core()
+kotlinx.coroutines.internal.DispatchedContinuationKt:
+    public static final synthetic io.flutter.embedding.engine.loader.FlutterLoader$Settings access$getUNDEFINED$p()
 kotlinx.coroutines.internal.ExceptionSuccessfullyProcessed
 kotlinx.coroutines.internal.ExceptionsConstructorKt$createConstructor$1$1
 kotlinx.coroutines.internal.ExceptionsConstructorKt$createConstructor$1$2
@@ -57724,6 +57732,8 @@ kotlinx.coroutines.internal.LimitedDispatcher:
     public static boolean tryAllocateWorker()
 kotlinx.coroutines.internal.LimitedDispatcherKt
 kotlinx.coroutines.internal.LockFreeLinkedListHead
+kotlinx.coroutines.internal.LockFreeLinkedListKt:
+    public static final java.lang.Object getCONDITION_FALSE()
 kotlinx.coroutines.internal.LockFreeLinkedListNode$$InternalSyntheticBackportWithForwarding$2$2aa6258a2d9af28a0a13a6c657322c6a4582747280d26bb9630ec94f72583295$0
 kotlinx.coroutines.internal.LockFreeLinkedListNode$$InternalSyntheticBackportWithForwarding$2$76d2387925fb03e4492195fe56a840ca430dde4ac3540a61ee4d9cd0c08d7e83$0
 kotlinx.coroutines.internal.LockFreeLinkedListNode$$InternalSyntheticBackportWithForwarding$2$76d2387925fb03e4492195fe56a840ca430dde4ac3540a61ee4d9cd0c08d7e83$1
@@ -57782,6 +57792,10 @@ kotlinx.coroutines.internal.ThreadContextKt$countAll$1:
     public static void invoke$6()
 kotlinx.coroutines.internal.ThreadContextKt$findOne$1
 kotlinx.coroutines.internal.ThreadContextKt$updateState$1
+kotlinx.coroutines.internal.ThreadContextKt:
+    public static final kotlinx.coroutines.internal.ThreadContextKt$countAll$1 countAll
+    public static final kotlinx.coroutines.internal.ThreadContextKt$countAll$1 findOne
+    public static final kotlinx.coroutines.internal.ThreadContextKt$countAll$1 updateState
 kotlinx.coroutines.internal.ThreadLocalKt
 kotlinx.coroutines.internal.ThreadSafeHeap:
     public final kotlinx.coroutines.EventLoopImplBase$DelayedTask firstImpl()
@@ -57877,14 +57891,7 @@ kotlinx.coroutines.selects.SelectClause1Impl:
 kotlinx.coroutines.selects.SelectImplementation
 kotlinx.coroutines.selects.SelectInstance
 kotlinx.coroutines.selects.SelectKt$DUMMY_PROCESS_RESULT_FUNCTION$1
-kotlinx.coroutines.selects.SelectKt:
-    public static final kotlinx.coroutines.selects.SelectKt$DUMMY_PROCESS_RESULT_FUNCTION$1 DUMMY_PROCESS_RESULT_FUNCTION
-    public static final com.google.android.gms.common.internal.TelemetryLoggingOptions$Builder NO_RESULT
-    public static final com.google.android.gms.common.internal.TelemetryLoggingOptions$Builder PARAM_CLAUSE_0
-    public static final com.google.android.gms.common.internal.TelemetryLoggingOptions$Builder STATE_CANCELLED
-    public static final com.google.android.gms.common.internal.TelemetryLoggingOptions$Builder STATE_COMPLETED
-    public static final com.google.android.gms.common.internal.TelemetryLoggingOptions$Builder STATE_REG
-    public static final synthetic kotlin.jvm.functions.Function3 access$getDUMMY_PROCESS_RESULT_FUNCTION$p()
+kotlinx.coroutines.selects.SelectKt
 kotlinx.coroutines.selects.TrySelectDetailedResult$EnumUnboxingLocalUtility
 kotlinx.coroutines.selects.TrySelectDetailedResult
 kotlinx.coroutines.sync.Mutex$DefaultImpls
@@ -57911,7 +57918,8 @@ kotlinx.coroutines.sync.MutexImpl:
     public static java.lang.Object lockSuspend()
     public static int tryLockImpl()
 kotlinx.coroutines.sync.MutexKt:
-    public static final com.google.android.gms.common.internal.TelemetryLoggingOptions$Builder ON_LOCK_ALREADY_LOCKED_BY_OWNER
+    public static final io.flutter.embedding.engine.loader.FlutterLoader$Settings ON_LOCK_ALREADY_LOCKED_BY_OWNER
+    public static final synthetic io.flutter.embedding.engine.loader.FlutterLoader$Settings access$getNO_OWNER$p()
 kotlinx.coroutines.sync.SemaphoreImpl$$InternalSyntheticBackportWithForwarding$1$c252e556c867cee1ac89fca692419e0d4b39bc94870e8b5ad42ffdb21485a953$0
 kotlinx.coroutines.sync.SemaphoreImpl$$InternalSyntheticBackportWithForwarding$1$c252e556c867cee1ac89fca692419e0d4b39bc94870e8b5ad42ffdb21485a953$1
 kotlinx.coroutines.sync.SemaphoreImpl$$InternalSyntheticBackportWithForwarding$1$c252e556c867cee1ac89fca692419e0d4b39bc94870e8b5ad42ffdb21485a953$2

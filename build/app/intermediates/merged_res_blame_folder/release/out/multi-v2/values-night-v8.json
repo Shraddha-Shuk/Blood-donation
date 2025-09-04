@@ -4,14 +4,14 @@
             "outputFile": "com.rhinorakt.donor.app-mergeReleaseResources-53:/values-night-v8/values-night-v8.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\Gary\\Desktop\\rrd\\android\\app\\src\\main\\res\\values-night\\styles.xml",
+                    "source": "/Users/mac/Documents/Manish-Parihar-Workspace/Blood-donation/android/app/src/main/res/values-night/styles.xml",
                     "from": {
                         "startLines": "3,14",
                         "startColumns": "4,4",
-                        "startOffsets": "175,831",
+                        "startOffsets": "172,817",
                         "endLines": "7,16",
                         "endColumns": "12,12",
-                        "endOffsets": "482,997"
+                        "endOffsets": "475,981"
                     },
                     "to": {
                         "startLines": "2,6",
@@ -23,7 +23,7 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\Gary\\.gradle\\caches\\transforms-3\\f533992111b025497eea956d1206b130\\transformed\\appcompat-1.1.0\\res\\values-night-v8\\values-night-v8.xml",
+                    "source": "/Users/mac/.gradle/caches/transforms-3/98cd8de8ce7b55450e3844a2ddd70a66/transformed/appcompat-1.1.0/res/values-night-v8/values-night-v8.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9",
                         "startColumns": "4,4,4,4,4,4,4,4",

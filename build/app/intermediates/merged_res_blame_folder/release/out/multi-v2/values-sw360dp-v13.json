@@ -4,7 +4,7 @@
             "outputFile": "com.rhinorakt.donor.app-mergeReleaseResources-53:/values-sw360dp-v13/values-sw360dp-v13.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\Gary\\.gradle\\caches\\transforms-3\\73d851822aca9f106ddcb4a190891a1d\\transformed\\preference-1.2.1\\res\\values-sw360dp-v13\\values-sw360dp-v13.xml",
+                    "source": "/Users/mac/.gradle/caches/transforms-3/76128e121e35fd2d6b82968f71431ea8/transformed/preference-1.2.1/res/values-sw360dp-v13/values-sw360dp-v13.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",

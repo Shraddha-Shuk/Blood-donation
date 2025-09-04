@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class BloodBankMapScreen extends StatefulWidget {
-  final Position position;
+  final LatLng position;
   final List<Map<String, dynamic>> bloodBanks;
   final bool isLoading;
 

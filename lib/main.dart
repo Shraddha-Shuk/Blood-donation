@@ -1,4 +1,4 @@
-import 'package:firebase_messaging/firebase_messaging.dart';
+
 import 'package:flutter/material.dart';
 import 'dart:math';
 import 'package:firebase_core/firebase_core.dart';
@@ -17,11 +17,14 @@ void main() async {
   
   // Run the app
   runApp(MaterialApp(
+    debugShowCheckedModeBanner: false,
     home: AuthWrapper(),
   ));
 }
 
 class AuthWrapper extends StatelessWidget {
+  const AuthWrapper({super.key});
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<User?>(
@@ -158,8 +161,8 @@ class WavePainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    Paint paint1 = Paint()..color = Colors.red.withOpacity(0.6);
-    Paint paint2 = Paint()..color = Colors.red.withOpacity(0.8);
+    Paint paint1 = Paint()..color = Colors.red.withValues(alpha: 0.6);
+    Paint paint2 = Paint()..color = Colors.red.withValues(alpha: 0.8);
 
     Path path1 = Path();
     Path path2 = Path();

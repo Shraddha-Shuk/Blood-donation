@@ -1,4 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:rrd/BloodBankMapScreen.dart';
 import 'package:rrd/ChatScreen.dart';
@@ -15,6 +16,8 @@ import 'dart:convert'; // Add this for JSON decoding
 import 'package:geocoding/geocoding.dart'; // Add this for reverse geocoding
 import 'package:latlong2/latlong.dart'; // Add this import for LatLng
 import 'package:intl/intl.dart';
+import 'package:rrd/utils/custom_loader.dart';
+import 'package:rrd/utils/permission_controller.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:geolocator/geolocator.dart';
 class MainScreen extends StatefulWidget {
@@ -106,8 +109,10 @@ class _HomePageState extends State<HomePage> {
   bool isVerified = false;
   Map<String, bool> answers = {};
   bool isDonor = false;
-  String currentLocation = "Fetching location..."; // Add this to store the user's location
-  LatLng? _currentLocation; // Add this to store the coordinates
+  String currentAddress = "Fetching location..."; 
+  LatLng? currentLatLng; // Add this to store the coordinates
+
+  LocationPermissionCustom locationPermissionCustom = LocationPermissionCustom();
 
   Future<void> checkDonorStatus() async {
     try {
@@ -152,53 +157,34 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  Future<void> fetchCurrentLocation() async {
-    // Request location permission
-    LocationPermission permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Location permission is required.")),
-        );
-        return;
-      }
-    }
-    if (permission == LocationPermission.deniedForever) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Location permissions are permanently denied.")),
-      );
-      return;
-    }
-    // Fetch the current location
-    // Use Geolocator to get the current position
-    // Use the geocoding package to convert coordinates to address
+  Future<void> getCurrentPosition() async {
     try {
-      Position position = await Geolocator.getCurrentPosition(
-          desiredAccuracy: LocationAccuracy.high);
-      List<Placemark> placemarks = await placemarkFromCoordinates(
-          position.latitude, position.longitude); // Use geocoding package
-      Placemark place = placemarks[0];
-      setState(() {
-        currentLocation =
-            "${place.locality}, ${place.administrativeArea}, ${place.country}";
-        _currentLocation = LatLng(position.latitude, position.longitude);
+      await locationPermissionCustom.locationPermissionRequest().then((value) async {
+        if (value == true) {
+          await locationPermissionCustom.determinePosition(context).then((value) async {
+            if (kDebugMode) {print("Current Lat Lng: $value");}
+            currentLatLng = LatLng(value.latitude, value.longitude);
+            currentAddress = await locationPermissionCustom.getAddressFromCoordinates(value.latitude, value.longitude);
+            setState(() {});
+            if (kDebugMode) {print("Current address: $currentAddress");}
+          });
+        }
       });
     } catch (e) {
-      print("Error fetching location: $e");
-      setState(() {
-        currentLocation = "Unable to fetch location";
-      });
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('$e')));
+      print("Current Location Exception: $e");
     }
   }
 
   Future<void> openMapToChangeLocation() async {
-    LatLng initialLocation = LatLng(20.5937, 78.9629); // Default location (India)
+    LatLng initialLocation = LatLng(20.5937, 78.9629); 
     try {
-      Position position = await Geolocator.getCurrentPosition(
-          desiredAccuracy: LocationAccuracy.high);
+      AppLoader.show(context);
+      Position position = await locationPermissionCustom.determinePosition(context);
       initialLocation = LatLng(position.latitude, position.longitude);
+      AppLoader.hide(context);
     } catch (e) {
+      AppLoader.hide(context);
       print("Error fetching current position: $e");
     }
 
@@ -208,29 +194,15 @@ class _HomePageState extends State<HomePage> {
         builder: (context) => find_donor.MapPage( // Use the aliased MapPage
           initialLocation: initialLocation,
           onLocationSelected: (LatLng location) async {
-            String address = await _getAddressFromCoordinates(location);
+            String address = await locationPermissionCustom.getAddressFromCoordinates(location.latitude,location.longitude);
             setState(() {
-              currentLocation = address;
-              _currentLocation = location;
+              currentAddress = address;
+              currentLatLng = location;
             });
           },
         ),
       ),
     );
-  }
-
-  Future<String> _getAddressFromCoordinates(LatLng latLng) async {
-    try {
-      List<Placemark> placemarks = await placemarkFromCoordinates(
-          latLng.latitude, latLng.longitude);
-      if (placemarks.isNotEmpty) {
-        Placemark place = placemarks.first;
-        return "${place.locality}, ${place.administrativeArea}, ${place.country}";
-      }
-    } catch (e) {
-      print("Error in reverse geocoding: $e");
-    }
-    return "${latLng.latitude}, ${latLng.longitude}";
   }
 
   final List<String> bannerImages = [
@@ -246,7 +218,7 @@ class _HomePageState extends State<HomePage> {
     {"icon": "assets/hospital.png", "label": "Hospital"},
   ];
 
-Future<List<Map<String, dynamic>>> fetchBloodBanks(Position position) async {
+Future<List<Map<String, dynamic>>> fetchBloodBanks(LatLng position) async {
   try {
     final response = await http.get(
       Uri.parse(
@@ -277,7 +249,8 @@ Future<List<Map<String, dynamic>>> fetchBloodBanks(Position position) async {
     return [];
   }
 }
-Future<List<Map<String, dynamic>>> fetchHospitals(Position position) async {
+
+Future<List<Map<String, dynamic>>> fetchHospitals(LatLng position) async {
   try {
     final response = await http.get(
       Uri.parse(
@@ -314,41 +287,18 @@ for (var item in data) {
     return [];
   }
 }
+
 Future<void> showHospitals(BuildContext context) async {
   try {
-    // Request permission and get the user's location
-    LocationPermission permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Location permission is required.")),
-        );
-        return;
-      }
+    // Show loading indicator
+    AppLoader.show(context);
+
+    if(currentLatLng?.latitude == 0.0 || currentLatLng?.longitude == 0.0){
+      Position position = await locationPermissionCustom.determinePosition(context);
+      currentLatLng = LatLng(position.latitude, position.longitude);
     }
 
-    if (permission == LocationPermission.deniedForever) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Location permissions are permanently denied.")),
-      );
-      return;
-    }
-
-    Position position = await Geolocator.getCurrentPosition(
-      desiredAccuracy: LocationAccuracy.high,
-    );
-    print("User's Location: Lat ${position.latitude}, Lon ${position.longitude}");
-
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) => Center(child: CircularProgressIndicator()),
-    );
-
-    print("Fetching hospitals for position: ${position.latitude}, ${position.longitude}");
-
-    List<Map<String, dynamic>> hospitals = await fetchHospitals(position);
+    List<Map<String, dynamic>> hospitals = await fetchHospitals(currentLatLng ?? LatLng(0.0, 0.0));
 
     print("Received hospital data:");
     for (var hospital in hospitals) {
@@ -357,14 +307,14 @@ Future<void> showHospitals(BuildContext context) async {
 
     print("Total hospitals received: ${hospitals.length}");
 
-    Navigator.pop(context); // Close loading dialog
+    AppLoader.hide(context);
 
     // Pass hospitals directly to the widget
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => HospitalMapScreen(
-          position: position, 
+          position: currentLatLng ?? LatLng(0.0, 0.0),
           hospitals: hospitals, // Pass the data here
         ),
       ),
@@ -390,53 +340,31 @@ Future<void> showHospitals(BuildContext context) async {
       );
     }
   }
-}Future<void> showBloodBanks(BuildContext context) async {
+}
+
+Future<void> showBloodBanks(BuildContext context) async {
   try {
-    // Get permission and location
-    LocationPermission permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Location permission is required.")),
-        );
-        return;
-      }
-    }
-
-    if (permission == LocationPermission.deniedForever) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Location permissions are permanently denied.")),
-      );
-      return;
-    }
-
-    Position position = await Geolocator.getCurrentPosition(
-      desiredAccuracy: LocationAccuracy.medium, // Reduce accuracy to save time
-      timeLimit: Duration(seconds: 5), // Timeout to prevent long waiting
-    );
-
-    print("User's Location: ${position.latitude}, ${position.longitude}");
 
     // Show loading indicator
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) => Center(child: CircularProgressIndicator()),
-    );
+    // Show loading indicator
+    AppLoader.show(context);
+
+    if(currentLatLng?.latitude == 0.0 || currentLatLng?.longitude == 0.0){
+      Position position = await locationPermissionCustom.determinePosition(context);
+      currentLatLng = LatLng(position.latitude, position.longitude);
+    }
 
     // Fetch blood banks
-    List<Map<String, dynamic>> bloodBanks = await fetchBloodBanks(position);
+    List<Map<String, dynamic>> bloodBanks = await fetchBloodBanks(currentLatLng ?? LatLng(0.0, 0.0));
     
-    // Close loading indicator
-    Navigator.pop(context);
+    AppLoader.hide(context);
 
     // Navigate to the map screen with the data
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => BloodBankMapScreen(
-          position: position,
+          position: currentLatLng ?? LatLng(0.0, 0.0),
           bloodBanks: bloodBanks,
         ),
       ),
@@ -556,7 +484,7 @@ DateTime parseDateTime(String date, String time) {
   void initState() {
     super.initState();
     checkDonorStatus();
-    fetchCurrentLocation(); // Fetch the user's location on initialization
+    getCurrentPosition(); // Fetch the user's location on initialization
     fetchBloodRequests();
   }
 
@@ -585,7 +513,7 @@ DateTime parseDateTime(String date, String time) {
                 GestureDetector(
                   onTap: openMapToChangeLocation, // Make location text clickable
                   child: Text(
-                    currentLocation,
+                    currentAddress,
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
